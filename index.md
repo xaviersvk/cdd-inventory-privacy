@@ -11,9 +11,14 @@ differ, the platform is named.
 
 ## The short version
 
-The app does **not** collect, store, or share any personal data with the developer or anyone else.
-There are no analytics, no advertising, and no tracking of any kind. Your data moves only between
+The developer does **not** collect, store, or receive any of your data — the app has no server of
+its own. There is no advertising and no tracking. Your inventory data and API token move only between
 your device and the CDD Vault servers of your own organization.
+
+- **iOS:** the app sends nothing to anyone except your CDD Vault server.
+- **Android:** the barcode and text scanner (Google ML Kit) additionally sends technical
+  diagnostics to Google — never your images, scanned codes or inventory data. See
+  [Diagnostics sent by Google ML Kit](#diagnostics-sent-by-google-ml-kit-android-only).
 
 ## Data the app handles
 
@@ -43,6 +48,25 @@ device**: on Android with Google ML Kit's on-device models, on iOS with Apple's 
 AVFoundation barcode detection and Vision text recognition. Camera frames are analyzed in memory and
 discarded — they are never stored, never uploaded, and never leave the device.
 
+## Diagnostics sent by Google ML Kit (Android only)
+
+On Android, scanning uses Google ML Kit (barcode scanning and text recognition, with the models
+bundled in the app). As Google documents in its
+[ML Kit data disclosure](https://developers.google.com/ml-kit/android-data-disclosure), ML Kit
+sends Google diagnostics and usage analytics about the scanning feature itself:
+
+- device information (for example manufacturer, model and OS version) and app information
+  (package name and version);
+- a per-installation identifier, which Google states is not intended to uniquely identify a user
+  or a physical device;
+- performance metrics, API configuration, feature input/output sizes and version, event types and
+  error codes.
+
+This is done by Google, is required for ML Kit to work, is sent over HTTPS, and according to Google
+is not transferred to third parties. It never includes camera images, the content of scanned
+barcodes or text, your API token, or any inventory data. The developer does not receive this data.
+The iOS app does not use ML Kit and sends no such diagnostics.
+
 ## Permissions
 
 **Android**
@@ -61,7 +85,8 @@ discarded — they are never stored, never uploaded, and never leave the device.
 
 ## What the app does NOT do
 
-- No analytics or crash-reporting SDKs.
+- No analytics or crash-reporting SDKs of the developer's own (the only diagnostics are the
+  Android ML Kit ones described above, sent to Google).
 - No advertising and no advertising identifiers.
 - No account with the developer — the app has no backend of its own.
 - No tracking across apps or websites (on iOS, the app never requests App Tracking Transparency).
